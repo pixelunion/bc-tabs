@@ -9,7 +9,9 @@
 }
 
 .tabs-content-panel {
-  &:not(.active) {
-    display: none;
+  display: none;
+
+  &.active {
+    display: block;
   }
 }
