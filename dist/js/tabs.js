@@ -13,11 +13,27 @@ export default class Tabs {
   }
 
   _init() {
-    const $firstTab = this.$el.find('a').eq(0);
-    const firstTabPanel = $firstTab.attr('href');
+    let $activeTab = this.$el.find('a').eq(0);
+    let activeTabPanel = $activeTab.attr('href');
+    const $inactiveTabPanels = $(activeTabPanel).siblings();
+    const hash = window.location.hash;
 
-    $firstTab.parent().addClass(this.options.activeClass);
-    $(firstTabPanel).addClass(this.options.activeClass);
+    if (hash) {
+      $inactiveTabPanels.each((idx, el) => {
+        const tabId = `#${$(el).attr('id')}`;
+
+        // Check if hash is a match to one of the tab panel IDs
+        // If it is, make that panel active instead
+        if (tabId == hash) {
+          $activeTab = this.$el.find(`a[href="${tabId}"]`);
+          activeTabPanel = tabId;
+        }
+      });
+    }
+
+    // Add active class to tab and panel
+    $activeTab.parent().addClass(this.options.activeClass);
+    $(activeTabPanel).addClass(this.options.activeClass);
   }
 
   _bindEvents() {
@@ -30,6 +46,7 @@ export default class Tabs {
   _changeTabs(e) {
     const $target = $(e.currentTarget);
 
+    window.location.hash = $target.attr('href');
     this._toggleClasses($target.parent());
     this._toggleClasses($($target.attr('href')));
   }
