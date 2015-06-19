@@ -13,27 +13,32 @@ export default class Tabs {
   }
 
   _init() {
-    let $activeTab = this.$el.find('a').eq(0);
-    let activeTabPanel = $activeTab.attr('href');
-    const $inactiveTabPanels = $(activeTabPanel).siblings();
     const hash = window.location.hash;
 
-    if (hash) {
-      $inactiveTabPanels.each((idx, el) => {
-        const tabId = `#${$(el).attr('id')}`;
+    // Loop through each tab UI
+    this.$el.each((idx, el) => {
+      const $tabUI = $(el);
+      let $activeTab = $tabUI.find('a').eq(0);
+      let activeTabPanel = $activeTab.attr('href');
+      const $inactiveTabPanels = $(activeTabPanel).siblings();
 
+      if (hash) {
         // Check if hash is a match to one of the tab panel IDs
         // If it is, make that panel active instead
-        if (tabId == hash) {
-          $activeTab = this.$el.find(`a[href="${tabId}"]`);
-          activeTabPanel = tabId;
-        }
-      });
-    }
+        $inactiveTabPanels.each((idx, el) => {
+          const tabId = `#${$(el).attr('id')}`;
 
-    // Add active class to tab and panel
-    $activeTab.parent().addClass(this.options.activeClass);
-    $(activeTabPanel).addClass(this.options.activeClass);
+          if (tabId == hash) {
+            $activeTab = this.$el.find(`a[href="${tabId}"]`);
+            activeTabPanel = tabId;
+          }
+        });
+      }
+
+      // Add active class to tab and panel
+      $activeTab.parent().addClass(this.options.activeClass);
+      $(activeTabPanel).addClass(this.options.activeClass);
+    });
   }
 
   _bindEvents() {
