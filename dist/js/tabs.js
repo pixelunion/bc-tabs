@@ -2,13 +2,15 @@ import $ from 'jquery';
 
 export default class Tabs {
   constructor(options) {
-    this.$el = $('[data-tabs]');
-
     this.options = $.extend({
+      moduleSelector: $('[data-tabs]'),
+      titleSelector: $('.tab-title'),
       activeClass: 'active',
       afterSetup: () => {},
       afterChange: () => {}
     }, options);
+
+    this.$el = this.options.moduleSelector;
 
     this._init();
     this._bindEvents();
@@ -20,7 +22,7 @@ export default class Tabs {
     // Loop through each tab UI
     this.$el.each((idx, el) => {
       const $tabUI = $(el);
-      let $activeTab = $tabUI.find('a').eq(0);
+      let $activeTab = $tabUI.find(this.options.titleSelector).first().find('a');
       let $activeTabPanel = $($activeTab.attr('href'));
       const $inactiveTabPanels = $activeTabPanel.siblings();
 
