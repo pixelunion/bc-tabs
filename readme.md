@@ -1,6 +1,9 @@
 # Bigcommerce Tabs UI Module
 
 Create a tabbed UI element
+### TODO
+- Update `_toggleClasses` to allow for accordion layout.
+- Add responsive setting that allows tabbed UI to break down into accordion at smaller screen sizes
 
 ### Installation
 
