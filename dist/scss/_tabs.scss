@@ -1,0 +1,17 @@
+.tabs {
+  li {
+    display: inline-block;
+
+    a {
+      padding: 5px 10px;
+    }
+  }
+}
+
+.tabs-content-panel {
+  display: none;
+
+  &.active {
+    display: block;
+  }
+}
