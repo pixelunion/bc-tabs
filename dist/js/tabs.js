@@ -51,21 +51,32 @@ export default class Tabs {
   _bindEvents() {
     this.$el.find('a').on('click', (e) => {
       e.preventDefault();
-      this._changeTabs(e);
+      const $target = $(e.currentTarget);
+      this._toggleClasses($target.parent());
+      this.displayTabContent($target.attr('href'));
     });
   }
 
-  _changeTabs(e) {
-    const $target = $(e.currentTarget);
+  // Update the tab navigation "active" state.
+  _updateTabNav(tabId) {
+    const hrefSelector = `[href="${tabId}"]`;
+    const $navItem = this.options.titleSelector.find(hrefSelector);
 
-    window.location.hash = $target.attr('href');
-    this._toggleClasses($target.parent());
-    this._toggleClasses($($target.attr('href')));
+    this.options.titleSelector.removeClass(this.options.activeClass);
+    this._toggleClasses($navItem.parent());
+  }
 
-    // afterChange callback
+  // Update the tab content "active" state (showing the tab).
+  displayTabContent(tabId) {
+    window.location.hash = tabId;
+
+    this._toggleClasses($(tabId));
+    this._updateTabNav(tabId);
+
     this.options.afterChange.call();
   }
 
+  // Swap the active state on while turning off any siblings.
   _toggleClasses($el) {
     $el
       .addClass(this.options.activeClass)

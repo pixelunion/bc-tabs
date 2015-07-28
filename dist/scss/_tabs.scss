@@ -1,14 +1,15 @@
-.tabs {
-  li {
-    display: inline-block;
+// Style the tab themselves.
+.tab-title {
+  display: inline-block;
+  padding: 5px 10px;
+  font-weight: normal;
 
-    a {
-      padding: 5px 10px;
-    }
+  &.active {
+    font-weight: bold;
   }
 }
 
-.tabs-content-panel {
+.tab-content-panel {
   display: none;
 
   &.active {

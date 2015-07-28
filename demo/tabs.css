@@ -1,0 +1,11 @@
+.tab-title {
+  display: inline-block;
+  padding: 5px 10px;
+  font-weight: normal; }
+  .tab-title.active {
+    font-weight: bold; }
+
+.tab-content-panel {
+  display: none; }
+  .tab-content-panel.active {
+    display: block; }

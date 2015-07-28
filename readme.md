@@ -33,12 +33,12 @@ jspm install --save bc-tabs=bitbucket:pixelunion/bc-tabs
     Tab panel content
   </div>
   <div class="tabs-content-panel" id="best-sellers">
-    Tab panel content    
+    Tab panel content
   </div>
 </div>
 ```
-#### Accordion
 
+#### Accordion
 ```
 <section data-tabs>
   <h2 class="tab-title"><a href="#hello">tab</a></h2>
@@ -52,5 +52,43 @@ jspm install --save bc-tabs=bitbucket:pixelunion/bc-tabs
   </div>
 </section>
 ```
- 
-  
+
+### Sample JS
+```
+// Constructor:
+this.tabs = new Tabs();
+
+// _bind:
+this.tabs._changeTabs('#leave-review');
+```
+
+#### SCSS
+```
+// Style the tab themselves.
+.tab-title {
+  font-weight: normal;
+
+  &.active {
+    font-weight: bold;
+  }
+}
+
+.tab-content-panel {
+  display: none;
+
+  &.active {
+    display: block;
+  }
+}
+```
+
+### Further Development
+
+For debugging or improvements you can run a standalone test version of the module using a very basic node server:
+
+```
+$ npm install
+$ jspm install
+$ npm run serve
+```
+This will allow you to make changes to the JS and HTML. To re-compile the scss you'll need to run `npm run build` from a separate terminal window after each change.
