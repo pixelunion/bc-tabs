@@ -44,7 +44,7 @@ export default class Tabs {
       $activeTabPanel.addClass(this.options.activeClass);
 
       // afterSetup callback
-      this.options.afterSetup.call();
+      this.options.afterSetup($activeTab.attr('href'));
     });
   }
 
@@ -73,7 +73,7 @@ export default class Tabs {
     this._toggleClasses($(tabId));
     this._updateTabNav(tabId);
 
-    this.options.afterChange.call();
+    this.options.afterChange(tabId);
   }
 
   // Swap the active state on while turning off any siblings.
