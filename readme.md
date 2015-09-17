@@ -11,12 +11,26 @@ Create a tabbed UI element
 jspm install --save bc-tabs=bitbucket:pixelunion/bc-tabs
 ```
 
-### Usage
-
 
 
 ### Options
 
+All options are optional.
+
+#### `moduleSelector`
+The jQuery object of the tab nav container. defaults to `$('[data-tabs]')`.
+
+#### `titleSelector`
+The jQuery object of the tab nav `<li>` element. defaults to `$('.tab-title')`.
+
+#### `activeClass`
+Class given to both the nav element and content container for the currently active tab.
+
+#### `afterSetup`
+Callback function called once the tabs have been initialized. Gets passed the id of the currently active tab.
+
+#### `afterChange`
+Callback function called when a tab is clicked. Gets passed the id of the clicked tab.
 
 
 
@@ -53,13 +67,20 @@ jspm install --save bc-tabs=bitbucket:pixelunion/bc-tabs
 </section>
 ```
 
-### Sample JS
+### Javascript
 ```
 // Constructor:
-this.tabs = new Tabs();
+this.tabs = new Tabs({
+  afterSetup: (tabId) => {
+    alert(`The tabs are ready! the current tab is ${tabId}`);
+  },
+  afterChange: () => {
+    alert(`A tab has been changed! the new tab is ${tabId}`);
+  }
+});
 
 // _bind:
-this.tabs._changeTabs('#leave-review');
+this.tabs.displayTabContent('#leave-review');
 ```
 
 #### SCSS
