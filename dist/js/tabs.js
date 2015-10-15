@@ -55,6 +55,12 @@ export default class Tabs {
       this._toggleClasses($target.parent());
       this.displayTabContent($target.attr('href'));
     });
+
+    $(window).on('hashchange', (e) => {
+      const hash = window.location.hash;
+
+      this.displayTabContent(hash);
+    });
   }
 
   // Update the tab navigation "active" state.
@@ -68,7 +74,12 @@ export default class Tabs {
 
   // Update the tab content "active" state (showing the tab).
   displayTabContent(tabId) {
-    window.location.hash = tabId;
+    if (history.pushState) {
+      history.pushState(null, null, tabId);
+      console.log("test");
+    } else {
+      window.location.hash = tabId;
+    }
 
     this._toggleClasses($(tabId));
     this._updateTabNav(tabId);
