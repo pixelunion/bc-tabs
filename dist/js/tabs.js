@@ -76,7 +76,6 @@ export default class Tabs {
   displayTabContent(tabId) {
     if (history.pushState) {
       history.pushState(null, null, tabId);
-      console.log("test");
     } else {
       window.location.hash = tabId;
     }
