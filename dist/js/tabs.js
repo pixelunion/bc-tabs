@@ -7,7 +7,8 @@ export default class Tabs {
       titleSelector: $('.tab-title'),
       activeClass: 'active',
       afterSetup: () => {},
-      afterChange: () => {}
+      afterChange: () => {},
+      tabHistory: true
     }, options);
 
     this.$el = this.options.moduleSelector;
@@ -52,8 +53,19 @@ export default class Tabs {
     this.$el.find('a').on('click', (e) => {
       e.preventDefault();
       const $target = $(e.currentTarget);
+      const tabId = $target.attr('href');
       this._toggleClasses($target.parent());
-      this.displayTabContent($target.attr('href'));
+      this.displayTabContent(tabId);
+
+      if (history.pushState) {
+	      if (this.options.tabHistory) {
+	        history.pushState({}, tabId, tabId);
+	      } else {
+	        history.replaceState({}, tabId, tabId);
+	      }
+	    } else {
+	      window.location.hash = tabId;
+	    }
     });
 
     $(window).on('hashchange', (e) => {
@@ -74,13 +86,8 @@ export default class Tabs {
 
   // Update the tab content "active" state (showing the tab).
   displayTabContent(tabId) {
-    if (history.pushState) {
-      history.pushState(null, null, tabId);
-    } else {
-      window.location.hash = tabId;
-    }
-
     this._toggleClasses($(tabId));
+
     this._updateTabNav(tabId);
 
     this.options.afterChange(tabId);

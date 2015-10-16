@@ -32,6 +32,9 @@ Callback function called once the tabs have been initialized. Gets passed the id
 #### `afterChange`
 Callback function called when a tab is clicked. Gets passed the id of the clicked tab.
 
+#### `tabHistory`
+Leverage the history API for tab chages. Defaults to `false`.
+
 
 
 ### Some sample markup
