@@ -8,7 +8,7 @@ export default class Tabs {
       activeClass: 'active',
       afterSetup: () => {},
       afterChange: () => {},
-      tabHistory: true
+      tabHistory: false
     }, options);
 
     this.$el = this.options.moduleSelector;
