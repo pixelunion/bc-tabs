@@ -58,14 +58,14 @@ export default class Tabs {
       this.displayTabContent(tabId);
 
       if (history.pushState) {
-	      if (this.options.tabHistory) {
-	        history.pushState({}, tabId, tabId);
-	      } else {
-	        history.replaceState({}, tabId, tabId);
-	      }
-	    } else {
-	      window.location.hash = tabId;
-	    }
+        if (this.options.tabHistory) {
+          history.pushState({}, tabId, tabId);
+        } else {
+          history.replaceState({}, tabId, tabId);
+        }
+      } else {
+        window.location.hash = tabId;
+      }
     });
 
     $(window).on('hashchange', (e) => {
