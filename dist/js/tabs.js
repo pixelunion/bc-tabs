@@ -50,7 +50,7 @@ export default class Tabs {
   }
 
   _bindEvents() {
-    this.$el.find('a').on('click', (e) => {
+    this.$el.on('click', `${this.options.titleSelector.selector} a`, (e) => {
       e.preventDefault();
       const $target = $(e.currentTarget);
       const tabId = $target.attr('href');
