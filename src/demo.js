@@ -1,5 +1,10 @@
+// Basic script to power the demo page, imports tab modules and instantiates
+
 import $ from 'jquery';
-import Tabs from '../../dist/js/tabs';
+import Tabs from './tabs';
+
+// Include the styling
+require('./_tabs.scss');
 
 const tabs = new Tabs();
 

@@ -1,3 +1,7 @@
+/*  Styles for the demo page 
+    Tab specific styling is included automagically as part of webpack module
+*/
+
 #main {
   margin: 0 auto;
   max-width: 800px;

@@ -1,3 +1,6 @@
+'format es6'
+// Required for JSPM to understand module format
+
 import $ from 'jquery';
 
 export default class Tabs {

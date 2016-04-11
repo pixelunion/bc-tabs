@@ -1,45 +1,45 @@
 # Bigcommerce Tabs UI Module
 
 Create a tabbed UI element
-### TODO
+
+## TODO
 - Update `_toggleClasses` to allow for accordion layout.
 - Add responsive setting that allows tabbed UI to break down into accordion at smaller screen sizes
 
-### Installation
+## Installation
 
 ```
 jspm install --save bc-tabs=bitbucket:pixelunion/bc-tabs
 ```
 
 
-
-### Options
+## Options
 
 All options are optional.
 
-#### `moduleSelector`
+### `moduleSelector`
 The jQuery object of the tab nav container. defaults to `$('[data-tabs]')`.
 
-#### `titleSelector`
+### `titleSelector`
 The jQuery object of the tab nav `<li>` element. defaults to `$('.tab-title')`.
 
-#### `activeClass`
+### `activeClass`
 Class given to both the nav element and content container for the currently active tab.
 
-#### `afterSetup`
+### `afterSetup`
 Callback function called once the tabs have been initialized. Gets passed the id of the currently active tab.
 
-#### `afterChange`
+### `afterChange`
 Callback function called when a tab is clicked. Gets passed the id of the clicked tab.
 
-#### `tabHistory`
+### `tabHistory`
 Leverage the history API for tab chages. Defaults to `false`.
 
 
 
-### Some sample markup
+## Some sample markup
 
-#### Tabs
+### Tabs
 ```
 <ul class="tabs" data-tabs>
   <li class="tab-title"><a href="#featured-products">Featured Products</a></li>
@@ -55,7 +55,7 @@ Leverage the history API for tab chages. Defaults to `false`.
 </div>
 ```
 
-#### Accordion
+### Accordion
 ```
 <section data-tabs>
   <h2 class="tab-title"><a href="#hello">tab</a></h2>
@@ -86,7 +86,7 @@ this.tabs = new Tabs({
 this.tabs.displayTabContent('#leave-review');
 ```
 
-#### SCSS
+### SCSS
 ```
 // Style the tab themselves.
 .tab-title {
@@ -108,11 +108,10 @@ this.tabs.displayTabContent('#leave-review');
 
 ### Further Development
 
-For debugging or improvements you can run a standalone test version of the module using a very basic node server:
+For debugging or improvements you can run a standalone test version of the module using a very basic webpack development server:
 
 ```
 $ npm install
-$ jspm install
-$ npm run serve
+$ npm run demo
 ```
-This will allow you to make changes to the JS and HTML. To re-compile the scss you'll need to run `npm run build` from a separate terminal window after each change.
+This will allow you to make changes to the JS and HTML while working with a live demo in your browser. 
