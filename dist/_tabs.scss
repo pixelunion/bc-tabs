@@ -1,0 +1,18 @@
+// Style the tab themselves.
+.tab-title {
+  display: inline-block;
+  padding: 5px 10px;
+  font-weight: normal;
+
+  &.active {
+    font-weight: bold;
+  }
+}
+
+.tab-content-panel {
+  display: none;
+
+  &.active {
+    display: block;
+  }
+}
