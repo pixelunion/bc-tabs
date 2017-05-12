@@ -9,7 +9,9 @@ Create a tabbed UI element
 ## Installation
 
 ```
-jspm install --save bc-tabs=bitbucket:pixelunion/bc-tabs
+jspm install --save bc-tabs=bitbucket:pixelunion/bc-tabs or
+
+npm install --save bitbucket:pixelunion/bc-tabs
 ```
 
 
@@ -17,14 +19,26 @@ jspm install --save bc-tabs=bitbucket:pixelunion/bc-tabs
 
 All options are optional.
 
-### `moduleSelector`
+### `tabScope`
 The jQuery object of the tab nav container. defaults to `$('[data-tabs]')`.
 
-### `titleSelector`
-The jQuery object of the tab nav `<li>` element. defaults to `$('.tab-title')`.
+### `tabToggle`
+The jQuery object of the tab link. defaults to `$('[data-tab-title]')`.
+
+### `tabContent`
+The jQuery object of the tab content. defaults to `$('[data-tab-content]')`.
+
+### `toggleTab`
+Override for the tab toggle function.
+
+### `keepTabsOpen`
+Override for keepTabsOpen function.  Needs to return boolean
 
 ### `activeClass`
 Class given to both the nav element and content container for the currently active tab.
+
+### `defaultTab`
+E.G. `#search-content-listing`
 
 ### `afterSetup`
 Callback function called once the tabs have been initialized. Gets passed the id of the currently active tab.

@@ -7,14 +7,12 @@ ul.tabs {
   .active {
     font-weight: bold;
   }
+
+  li { display: inline-block; }
 }
 
 .tabs-content > * {
   display: none;
 
-  &.active {
-    display: block;
-  }
+  &.active { display: block; }
 }
-
-ul.tabs li { display: inline-block; }

@@ -2,3 +2,4 @@ node_modules
 
 # Demo script is generated when run
 demo/script.js
+demo/script.js.map

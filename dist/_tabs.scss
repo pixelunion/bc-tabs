@@ -1,18 +1,18 @@
 // Style the tab themselves.
-.tab-title {
+ul.tabs {
   display: inline-block;
   padding: 5px 10px;
   font-weight: normal;
 
-  &.active {
+  .active {
     font-weight: bold;
   }
+
+  li { display: inline-block; }
 }
 
-.tab-content-panel {
+.tabs-content > * {
   display: none;
 
-  &.active {
-    display: block;
-  }
+  &.active { display: block; }
 }

@@ -1,7 +1,5 @@
-'format es6'
-// Required for JSPM to understand module format
-
 import $ from 'jquery';
+import debounce from 'just-debounce';
 
 export default class Tabs {
   constructor(options) {
@@ -11,19 +9,13 @@ export default class Tabs {
       tabScope: '[data-tabs]',
       tabToggle: '[data-tab-link]',
       tabContent: '[data-tab-content]',
-
       toggleTab: this._defaultToggleTab,
-      toggleContent: this._defaultToggleContent,
       keepTabsOpen: this.keepTabsOpen,
-
       activeClass: 'active',
       defaultTab: '',
-
       afterSetup: () => {},
-      afterChange: () => {},
-
+      afterChange: ($element) => {},
       tabHistory: false,
-
     }, options);
 
     this.$scope = $(this.options.tabScope);
@@ -32,18 +24,16 @@ export default class Tabs {
 
     this.defaultTab = this.options.defaultTab || this.$tabContents.get(0);
 
-    // this.currentTab = this.options.currentTab || this._defaultTab();
     this.currentTab = this._defaultTab();
 
     this._bindEvents();
     this._init();
-    // console.log(this.options)
-    // console.log(this.currentTab)
+    this.options.afterSetup();
   }
 
-  /* ----------------------------------------------------------------------- / 
-    Default functions: can be overridden by passing callbacks into constructor
-  */
+  /* ----------------------------------------------------------------------- /
+   Default functions: can be overridden by passing callbacks into constructor
+   */
 
   // Find out the default tab (if none selected in options)
   _defaultTab() {
@@ -53,39 +43,38 @@ export default class Tabs {
   // Default function to toggle a tab between active / inactive
   _defaultToggleTab(element, active) {
     const $element = $(element);
-    if (active) {
-      // Set the tab to active
-      $element.addClass('active');
-    } else {
-      // Remove the active class from the tab
-      $element.removeClass('active');
-    }
+
+    $element.toggleClass(this.activeClass, active);
   }
 
   // Default function to toggle some content on or off
   _defaultToggleContent(element, active) {
     const $element = $(element);
-    const psuedoElem = window.getComputedStyle($element.get(0), ':before').content;
-    console.log('psuedo', psuedoElem);
+    const pseudoElem = window.getComputedStyle($element.get(0), ':before').content.replace(/"/g, '');
 
-    // console.log(psuedoElem);
     if (active) {
       // Set the tab to active
-      if (psuedoElem === '"slide"') {
+      if (pseudoElem === 'slide') {
         // show with a slidetoggle
-        $element.slideDown('fast');
+        $element.slideDown('fast', () => {
+          this.options.afterChange($element);
+        });
       } else {
         // Show simply via display
         $element.show();
+        this.options.afterChange($element);
       }
     } else {
       // Set the tab to inactive
-      if (psuedoElem === '"slide"') {
+      if (pseudoElem === 'slide') {
         // Remove via a slideToggle
-        $element.slideUp('fast');
+        $element.slideUp('fast', () => {
+          this.options.afterChange($element);
+        });
       } else {
         // Remove via a simple hide
         $element.hide();
+        this.options.afterChange($element);
       }
     }
   }
@@ -96,48 +85,53 @@ export default class Tabs {
     return window.innerWidth < 800;
   }
 
-  /* ----------------------------------------------------------------------- / 
-    Activation functions: Trigger the callbacks for showing / hiding tab
-      components and links
-  */
+  /* ----------------------------------------------------------------------- /
+   Activation functions: Trigger the callbacks for showing / hiding tab
+   components and links
+   */
 
   // Set a particular tab as active (and optionally disable others)
-  // This function is a wrapper for activating both the tab-link and 
+  // This function is a wrapper for activating both the tab-link and
   // tab-content at the same time.
   activateTab(hash, closeOthers) {
 
     // necessary to check for links that link to tabs that aren't available:
-    if (!$(hash).length) { console.log('tab doesnt exist!'); return; }
+    if (!$(hash).length) {
+      console.log('tab doesn\'t exist!');
+      return;
+    }
 
-    const isSticky = closeOthers ? closeOthers : this.options.keepTabsOpen();
+    const isSticky = closeOthers || this.options.keepTabsOpen();
     this.activateTabToggle(hash, isSticky);
     this.activateTabContent(hash, isSticky);
   }
 
-  // Set a particular [data-tab-toggle] link as active, 
+  // Set a particular [data-tab-toggle] link as active,
   // and (optionally) deactivate others
-  activateTabToggle(hash, isSticky=false) {
+  activateTabToggle(hash, isSticky = false) {
 
     const $thisTab = $(hash);
 
     // Find tablinks that point to this hash
-    const $tabLinks = this.$tabToggles.filter(function () {
+    const $tabLinks = this.$tabToggles.filter(function() {
       return $(this).attr('href') === hash;
     });
 
     if (!isSticky) {
       // Tab stickyness not active, target all other tabs in group
 
-      if ($thisTab.is(':visible') === true) return;
+      if ($thisTab.is(':visible')) return;
       // Grab all the groups these links belong to
       const tabsGroups = [];
-      $tabLinks.each(function () {
+      $tabLinks.each(function() {
         const thisTabGroup = $(this).data('tabs-group');
-        if (tabsGroups.indexOf(thisTabGroup) === -1) {tabsGroups.push(thisTabGroup);}
+        if (tabsGroups.indexOf(thisTabGroup) === -1) {
+          tabsGroups.push(thisTabGroup);
+        }
       });
 
       // Filter all the tabs to only those belonging to these groups
-      const $tabsGroup = this.$tabToggles.filter(function () {
+      const $tabsGroup = this.$tabToggles.filter(function() {
         return tabsGroups.indexOf($(this).data('tabs-group')) > -1;
       });
 
@@ -152,7 +146,7 @@ export default class Tabs {
       }
     } else {
       // Tabs are sticky, so we should only toggle items matching this hash
-      if ($thisTab.is(':visible') === true) {
+      if ($thisTab.is(':visible')) {
         // Enable just the tab links associated with this hash
         for (let i = 0; i < $tabLinks.length; i++) {
           this.options.toggleTab($tabLinks[i], false);
@@ -165,89 +159,81 @@ export default class Tabs {
     }
   }
 
-  // Activate a content-element with the corresponding hash, and 
+  // Activate a content-element with the corresponding hash, and
   // (optionally) hide others in group
-  activateTabContent(hash, isSticky=false) {
-
+  activateTabContent(hash, isSticky = false) {
     const $thisTab = $(hash);
-    console.log('hash clicked was', hash, 'resolved to', $thisTab);
 
     if (!isSticky) {
 
-      if ($thisTab.is(':visible') === true) return;
+      if ($thisTab.is(':visible')) return;
 
       // Locate other tabs that share the same 'tabs-group'
       const tabsGroup = $thisTab.data('tabs-group');
-      const $tabsGroup = this.$tabContents.filter(function () {
-        return $(this).data('tabs-group') === tabsGroup;
+      const $tabsGroup = this.$tabContents.filter(function() {
+        return this.getAttribute('data-tabs-group') === tabsGroup;
       });
 
       // Disable other tabs in this group
       for (let i = 0; i < $tabsGroup.length; i++) {
-        this.options.toggleContent($tabsGroup[i], false);
+        this._defaultToggleContent($tabsGroup[i], false);
       }
       // Enable this tab content
-      this.options.toggleContent($thisTab, true);
+      this._defaultToggleContent($thisTab, true);
     } else {
       // Tabs are sticky, so we only toggle the individual item
-      if ($thisTab.is(':visible') === true) {
-        this.options.toggleContent($thisTab, false);
+      if ($thisTab.is(':visible')) {
+        this._defaultToggleContent($thisTab, false);
       } else {
-        this.options.toggleContent($thisTab, true);
+        this._defaultToggleContent($thisTab, true);
       }
     }
   }
 
-  /* ----------------------------------------------------------------------- / 
-    Miscellaneous: deal with initing the base tab state (say after resizing 
-      the viewport or on page load) and event binding.
-  */
+  /* ----------------------------------------------------------------------- /
+   Miscellaneous: deal with initing the base tab state (say after resizing
+   the viewport or on page load) and event binding.
+   */
 
   // Function to run when tabs are first init (sets one active over others)
   _init() {
-
-    const hash = window.location.hash || this.defaultTab;
-    console.log('the scurrent hash is:', hash);
-    console.log('tab toggles length:', this.$tabToggles.length)
+    const hash = window.location.hash || `#${this.defaultTab.id}`;
+    const currentTab = hash ? `a[href="${hash}"]` : '[data-tab-link]:first';
 
     // Disable all the tabs
     for (let i = 0; i < this.$tabToggles.length; i++) {
-      console.log('tab toggles item:', this.$tabToggles.get(i))
       this.options.toggleTab(this.$tabToggles.get(i), false);
     }
 
     for (let i = 0; i < this.$tabContents.length; i++) {
-      this.options.toggleContent(this.$tabContents.get(i), false);
+      this._defaultToggleContent(this.$tabContents.get(i), false);
     }
 
-    this.options.toggleContent(hash, true);
-    this.options.toggleTab(hash, true);
-
+    this._defaultToggleContent(hash, true);
+    this.options.toggleTab(currentTab, true);
   }
 
   // Bind event handlers to the scope target.
   _bindEvents() {
-
     this.$scope.on('click', this.options.tabToggle, (event) => {
       event.preventDefault();
-
       const hash = $(event.target).attr('href');
+
       this.activateTab(hash);
 
-      if (history.pushState) {
-        if (this.options.tabHistory) {
-          history.pushState({}, hash, hash);
-        } else {
-          history.replaceState({}, hash, hash);
-        }
+      if (this.options.tabHistory) {
+        history.pushState({}, hash, hash);
       } else {
-        window.location.hash = tabId;
+        history.replaceState({}, hash, hash);
       }
     });
 
-    $(window).on('hashchange', (event) => {
+    $(window).on('hashchange', () => {
       this.activateTab(window.location.hash);
     });
 
+    $(window).on('resize', debounce(() => {
+      this._init();
+    }, 300));
   }
 }

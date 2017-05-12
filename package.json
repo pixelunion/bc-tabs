@@ -29,7 +29,11 @@
     }
   },
   "dependencies": {
-    "jquery": "^2.1.4"
+    "jquery": "^2.1.4",
+    "just-debounce": "^1.0.0"
   },
-  "pre-commit": ["build", "git-add"]
+  "pre-commit": [
+    "build",
+    "git-add"
+  ]
 }
