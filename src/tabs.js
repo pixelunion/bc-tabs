@@ -171,7 +171,7 @@ export default class Tabs {
       // Locate other tabs that share the same 'tabs-group'
       const tabsGroup = $thisTab.data('tabs-group');
       const $tabsGroup = this.$tabContents.filter(function() {
-        return this.getAttribute('data-tabs-group') === tabsGroup;
+        return $(this).data('tabs-group') === tabsGroup;
       });
 
       // Disable other tabs in this group

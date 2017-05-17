@@ -218,7 +218,7 @@ var Tabs = function () {
         // Locate other tabs that share the same 'tabs-group'
         var tabsGroup = $thisTab.data('tabs-group');
         var $tabsGroup = this.$tabContents.filter(function () {
-          return this.getAttribute('data-tabs-group') === tabsGroup;
+          return (0, _jquery2.default)(this).data('tabs-group') === tabsGroup;
         });
 
         // Disable other tabs in this group
