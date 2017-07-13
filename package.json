@@ -1,6 +1,6 @@
 {
   "name": "bc-tabs",
-  "version": "0.4.1",
+  "version": "1.0.2",
   "private": true,
   "description": "Pixel Unions Tabs UI Module",
   "main": "./dist/tabs",

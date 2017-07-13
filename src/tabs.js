@@ -106,6 +106,12 @@ export default class Tabs {
     this.activateTabContent(hash, isSticky);
   }
 
+  // Remove bc-tabs if content with tabs is updated, refreshed or replaced
+  unload() {
+    this.$scope.off('.bc-tabs');
+    $(window).off('.bc-tabs');
+  }
+
   // Set a particular [data-tab-toggle] link as active,
   // and (optionally) deactivate others
   activateTabToggle(hash, isSticky = false) {

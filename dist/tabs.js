@@ -143,6 +143,15 @@ var Tabs = function () {
       this.activateTabContent(hash, isSticky);
     }
 
+    // Remove bc-tabs if content with tabs is updated, refreshed or replaced
+
+  }, {
+    key: 'unload',
+    value: function unload() {
+      this.$scope.off('.bc-tabs');
+      (0, _jquery2.default)(window).off('.bc-tabs');
+    }
+
     // Set a particular [data-tab-toggle] link as active,
     // and (optionally) deactivate others
 

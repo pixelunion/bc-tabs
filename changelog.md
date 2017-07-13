@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+##[ 1.0.2 ] - 2017-05-12
+
+### Fixed
+- Added unload to remove bc-tabs if content with tabs is updated, refreshed or replaced
+
+##[ 1.0.1 ] - 2017-05-16
+
+### Fixed
+- isSticky bug fix
+
 ##[ 1.0.0 ] - 2017-05-12
 
 ### Changed
