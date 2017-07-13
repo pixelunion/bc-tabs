@@ -279,7 +279,7 @@ var Tabs = function () {
     value: function _bindEvents() {
       var _this2 = this;
 
-      this.$scope.on('click', this.options.tabToggle, function (event) {
+      this.$scope.on('click.bc-tabs', this.options.tabToggle, function (event) {
         event.preventDefault();
         var hash = (0, _jquery2.default)(event.target).attr('href');
 

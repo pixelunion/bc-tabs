@@ -221,7 +221,7 @@ export default class Tabs {
 
   // Bind event handlers to the scope target.
   _bindEvents() {
-    this.$scope.on('click', this.options.tabToggle, (event) => {
+    this.$scope.on('click.bc-tabs', this.options.tabToggle, (event) => {
       event.preventDefault();
       const hash = $(event.target).attr('href');
 
