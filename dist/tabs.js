@@ -292,11 +292,11 @@ var Tabs = function () {
         }
       });
 
-      (0, _jquery2.default)(window).on('hashchange', function () {
+      (0, _jquery2.default)(window).on('hashchange.bc-tabs', function () {
         _this2.activateTab(window.location.hash);
       });
 
-      (0, _jquery2.default)(window).on('resize', (0, _justDebounce2.default)(function () {
+      (0, _jquery2.default)(window).on('resize.bc-tabs', (0, _justDebounce2.default)(function () {
         _this2._init();
       }, 300));
     }

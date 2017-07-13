@@ -234,11 +234,11 @@ export default class Tabs {
       }
     });
 
-    $(window).on('hashchange', () => {
+    $(window).on('hashchange.bc-tabs', () => {
       this.activateTab(window.location.hash);
     });
 
-    $(window).on('resize', debounce(() => {
+    $(window).on('resize.bc-tabs', debounce(() => {
       this._init();
     }, 300));
   }
