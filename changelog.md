@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Added unload to remove bc-tabs if content with tabs is updated, refreshed or replaced
 
+### Changed
+- Updated jQuery to 3.1
+
 ##[ 1.0.1 ] - 2017-05-16
 
 ### Fixed
