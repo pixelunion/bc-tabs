@@ -44,6 +44,7 @@ var Tabs = function () {
     this.defaultTab = this.options.defaultTab || this.$tabContents.get(0);
 
     this.currentTab = this._defaultTab();
+    this.previousStyle = this._getTabStyle();
 
     this._bindEvents();
     this._init();
@@ -72,6 +73,12 @@ var Tabs = function () {
 
       $element.toggleClass(this.activeClass, active);
     }
+  }, {
+    key: '_getTabStyle',
+    value: function _getTabStyle() {
+      var pseudoElem = window.getComputedStyle(this.$scope.get(0), ':before').content.replace(/"/g, '');
+      return pseudoElem;
+    }
 
     // Default function to toggle some content on or off
 
@@ -81,11 +88,10 @@ var Tabs = function () {
       var _this = this;
 
       var $element = (0, _jquery2.default)(element);
-      var pseudoElem = window.getComputedStyle($element.get(0), ':before').content.replace(/"/g, '');
 
       if (active) {
         // Set the tab to active
-        if (pseudoElem === 'slide') {
+        if (this.previousStyle === 'slide') {
           // show with a slidetoggle
           $element.slideDown('fast', function () {
             _this.options.afterChange($element);
@@ -97,7 +103,7 @@ var Tabs = function () {
         }
       } else {
         // Set the tab to inactive
-        if (pseudoElem === 'slide') {
+        if (this.previousStyle === 'slide') {
           // Remove via a slideToggle
           $element.slideUp('fast', function () {
             _this.options.afterChange($element);
@@ -255,7 +261,17 @@ var Tabs = function () {
 
   }, {
     key: '_init',
-    value: function _init() {
+    value: function _init(checkStyleMatch) {
+      if (checkStyleMatch) {
+        var currentStyle = this._getTabStyle();
+
+        if (this.previousStyle == currentStyle) {
+          return;
+        }
+
+        this.previousStyle = currentStyle;
+      }
+
       var hash = window.location.hash || '#' + this.defaultTab.id;
       var currentTab = hash ? 'a[href="' + hash + '"]' : '[data-tab-link]:first';
 
@@ -297,7 +313,7 @@ var Tabs = function () {
       });
 
       (0, _jquery2.default)(window).on('resize.bc-tabs', (0, _justDebounce2.default)(function () {
-        _this2._init();
+        _this2._init(true);
       }, 300));
     }
   }]);
