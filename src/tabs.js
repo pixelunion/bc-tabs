@@ -25,6 +25,7 @@ export default class Tabs {
     this.defaultTab = this.options.defaultTab || this.$tabContents.get(0);
 
     this.currentTab = this._defaultTab();
+    this.previousStyle = this._getTabStyle();
 
     this._bindEvents();
     this._init();
@@ -47,14 +48,18 @@ export default class Tabs {
     $element.toggleClass(this.activeClass, active);
   }
 
+  _getTabStyle() {
+    const pseudoElem = window.getComputedStyle(this.$scope.get(0), ':before').content.replace(/"/g, '');
+    return pseudoElem;
+  }
+
   // Default function to toggle some content on or off
   _defaultToggleContent(element, active) {
     const $element = $(element);
-    const pseudoElem = window.getComputedStyle($element.get(0), ':before').content.replace(/"/g, '');
 
     if (active) {
       // Set the tab to active
-      if (pseudoElem === 'slide') {
+      if (this.previousStyle === 'slide') {
         // show with a slidetoggle
         $element.slideDown('fast', () => {
           this.options.afterChange($element);
@@ -66,7 +71,7 @@ export default class Tabs {
       }
     } else {
       // Set the tab to inactive
-      if (pseudoElem === 'slide') {
+      if (this.previousStyle === 'slide') {
         // Remove via a slideToggle
         $element.slideUp('fast', () => {
           this.options.afterChange($element);
@@ -202,7 +207,17 @@ export default class Tabs {
    */
 
   // Function to run when tabs are first init (sets one active over others)
-  _init() {
+  _init(checkStyleMatch) {
+    if (checkStyleMatch) {
+      const currentStyle = this._getTabStyle();
+
+      if (this.previousStyle == currentStyle) {
+        return;
+      }
+
+      this.previousStyle = currentStyle;
+    }
+
     const hash = window.location.hash || `#${this.defaultTab.id}`;
     const currentTab = hash ? `a[href="${hash}"]` : '[data-tab-link]:first';
 
@@ -239,7 +254,7 @@ export default class Tabs {
     });
 
     $(window).on('resize.bc-tabs', debounce(() => {
-      this._init();
+      this._init(true);
     }, 300));
   }
 }

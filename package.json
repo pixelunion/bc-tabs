@@ -23,11 +23,6 @@
     "git-add": "git add ./dist"
   },
   "license": "MIT",
-  "jspm": {
-    "dependencies": {
-      "jquery": "github:components/jquery@^3.1.0"
-    }
-  },
   "dependencies": {
     "jquery": "^3.1.0",
     "just-debounce": "^1.0.0"
