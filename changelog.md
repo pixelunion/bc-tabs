@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [unreleased] - unreleased
+## [1.0.4] - 2019-09-06
 
 ### Changed
 - jQuery version updated to avoid security risks
