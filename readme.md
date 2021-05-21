@@ -7,11 +7,8 @@ Create a tabbed UI element
 - Add responsive setting that allows tabbed UI to break down into accordion at smaller screen sizes
 
 ## Installation
-
 ```
-jspm install --save bc-tabs=bitbucket:pixelunion/bc-tabs or
-
-npm install --save bitbucket:pixelunion/bc-tabs
+npm install --save github:pixelunion/bc-tabs
 ```
 
 
